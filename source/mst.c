@@ -41,10 +41,10 @@ int                found,
 
 found = 0;
 
-for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph_adjlists(graph)); element != NULL; element =
+   mac_list_next(element)) {
 
-   mst_vertex = ((AdjList *)list_data(element))->vertex;
+   mst_vertex = ((AdjList *)mac_list_data(element))->vertex;
 
    if (match(mst_vertex, start)) {
 
@@ -104,15 +104,15 @@ while (i < graph_vcount(graph)) {
 
    minimum = DBL_MAX;
 
-   for (element = list_head(&graph_adjlists(graph)); element != NULL; element
-      = list_next(element)) {
+   for (element = mac_list_head(&graph_adjlists(graph)); element != NULL; element
+      = mac_list_next(element)) {
 
-      mst_vertex = ((AdjList *)list_data(element))->vertex;
+      mst_vertex = ((AdjList *)mac_list_data(element))->vertex;
 
       if (mst_vertex->color == white && mst_vertex->key < minimum) {
 
          minimum = mst_vertex->key;
-         adjlist = list_data(element);
+         adjlist = mac_list_data(element);
 
       }
 
@@ -132,10 +132,10 @@ while (i < graph_vcount(graph)) {
    *                                                                         *
    **************************************************************************/
 
-   for (member = list_head(&adjlist->adjacent); member != NULL; member =
-      list_next(member)) {
+   for (member = mac_list_head(&adjlist->adjacent); member != NULL; member =
+      mac_list_next(member)) {
 
-      adj_vertex = list_data(member);
+      adj_vertex = mac_list_data(member);
 
       /***********************************************************************
       *                                                                      *
@@ -143,10 +143,10 @@ while (i < graph_vcount(graph)) {
       *                                                                      *
       ***********************************************************************/
 
-      for (element = list_head(&graph_adjlists(graph)); element != NULL;
-         element = list_next(element)) {
+      for (element = mac_list_head(&graph_adjlists(graph)); element != NULL;
+         element = mac_list_next(element)) {
 
-         mst_vertex = ((AdjList *)list_data(element))->vertex;
+         mst_vertex = ((AdjList *)mac_list_data(element))->vertex;
 
          if (match(mst_vertex, adj_vertex)) {
 
@@ -189,10 +189,10 @@ while (i < graph_vcount(graph)) {
 *                                                                            *
 *****************************************************************************/
 
-list_init(span, NULL);
+mac_list_init(span, NULL);
 
-for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph_adjlists(graph)); element != NULL; element =
+   mac_list_next(element)) {
 
    /**************************************************************************
    *                                                                         *
@@ -200,13 +200,13 @@ for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
    *                                                                         *
    **************************************************************************/
 
-   mst_vertex = ((AdjList *)list_data(element))->vertex;
+   mst_vertex = ((AdjList *)mac_list_data(element))->vertex;
 
    if (mst_vertex->color == black) {
 
-      if (list_ins_next(span, list_tail(span), mst_vertex) != 0) {
+      if (mac_list_ins_next(span, mac_list_tail(span), mst_vertex) != 0) {
 
-         list_destroy(span);
+         mac_list_destroy(span);
          return -1;
 
       }

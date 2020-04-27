@@ -7,16 +7,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "list.h"
-#include "set.h"
+#include "mac/list.h"
+#include "mac/set.h"
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------- set_init -------------------------------  *
+*  ------------------------------- mac_set_init -------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void set_init(Set *set, int (*match)(const void *key1, const void *key2),
+void mac_set_init(Set *set, int (*match)(const void *key1, const void *key2),
    void (*destroy)(void *data)) {
 
 /*****************************************************************************
@@ -25,7 +25,7 @@ void set_init(Set *set, int (*match)(const void *key1, const void *key2),
 *                                                                            *
 *****************************************************************************/
 
-list_init(set, destroy);
+mac_list_init(set, destroy);
 set->match = match;
 
 return;
@@ -34,11 +34,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------ set_insert ------------------------------  *
+*  ------------------------------ mac_set_insert ------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int set_insert(Set *set, const void *data) {
+int mac_set_insert(Set *set, const void *data) {
 
 /*****************************************************************************
 *                                                                            *
@@ -46,7 +46,7 @@ int set_insert(Set *set, const void *data) {
 *                                                                            *
 *****************************************************************************/
 
-if (set_is_member(set, data))
+if (mac_set_is_member(set, data))
    return 1;
 
 /*****************************************************************************
@@ -55,17 +55,17 @@ if (set_is_member(set, data))
 *                                                                            *
 *****************************************************************************/
 
-return list_ins_next(set, list_tail(set), data);
+return mac_list_ins_next(set, mac_list_tail(set), data);
 
 }
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------ set_remove ------------------------------  *
+*  ------------------------------ mac_set_remove ------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int set_remove(Set *set, void **data) {
+int mac_set_remove(Set *set, void **data) {
 
 ListElmt           *member,
                    *prev;
@@ -78,9 +78,9 @@ ListElmt           *member,
 
 prev = NULL;
 
-for (member = list_head(set); member != NULL; member = list_next(member)) {
+for (member = mac_list_head(set); member != NULL; member = mac_list_next(member)) {
 
-   if (set->match(*data, list_data(member)))
+   if (set->match(*data, mac_list_data(member)))
       break;
 
    prev = member;
@@ -102,17 +102,17 @@ if (member == NULL)
 *                                                                            *
 *****************************************************************************/
 
-return list_rem_next(set, prev, data);
+return mac_list_rem_next(set, prev, data);
 
 }
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------- set_union ------------------------------  *
+*  ------------------------------- mac_set_union ------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int set_union(Set *setu, const Set *set1, const Set *set2) {
+int mac_set_union(Set *setu, const Set *set1, const Set *set2) {
 
 ListElmt           *member;
 
@@ -124,7 +124,7 @@ void               *data;
 *                                                                            *
 *****************************************************************************/
 
-set_init(setu, set1->match, NULL);
+mac_set_init(setu, set1->match, NULL);
 
 /*****************************************************************************
 *                                                                            *
@@ -132,13 +132,13 @@ set_init(setu, set1->match, NULL);
 *                                                                            *
 *****************************************************************************/
 
-for (member = list_head(set1); member != NULL; member = list_next(member)) {
+for (member = mac_list_head(set1); member != NULL; member = mac_list_next(member)) {
 
-   data = list_data(member);
+   data = mac_list_data(member);
 
-   if (list_ins_next(setu, list_tail(setu), data) != 0) {
+   if (mac_list_ins_next(setu, mac_list_tail(setu), data) != 0) {
 
-      set_destroy(setu);
+      mac_set_destroy(setu);
       return -1;
 
    }
@@ -151,9 +151,9 @@ for (member = list_head(set1); member != NULL; member = list_next(member)) {
 *                                                                            *
 *****************************************************************************/
 
-for (member = list_head(set2); member != NULL; member = list_next(member)) {
+for (member = mac_list_head(set2); member != NULL; member = mac_list_next(member)) {
 
-   if (set_is_member(set1, list_data(member))) {
+   if (mac_set_is_member(set1, mac_list_data(member))) {
 
       /***********************************************************************
       *                                                                      *
@@ -167,11 +167,11 @@ for (member = list_head(set2); member != NULL; member = list_next(member)) {
 
    else {
 
-      data = list_data(member);
+      data = mac_list_data(member);
 
-      if (list_ins_next(setu, list_tail(setu), data) != 0) {
+      if (mac_list_ins_next(setu, mac_list_tail(setu), data) != 0) {
 
-         set_destroy(setu);
+         mac_set_destroy(setu);
          return -1;
 
       }
@@ -186,11 +186,11 @@ return 0;
 
 /*****************************************************************************
 *                                                                            *
-*  --------------------------- set_intersection ---------------------------  *
+*  --------------------------- mac_set_intersection ---------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int set_intersection(Set *seti, const Set *set1, const Set *set2) {
+int mac_set_intersection(Set *seti, const Set *set1, const Set *set2) {
 
 ListElmt           *member;
 
@@ -202,7 +202,7 @@ void               *data;
 *                                                                            *
 *****************************************************************************/
 
-set_init(seti, set1->match, NULL);
+mac_set_init(seti, set1->match, NULL);
 
 /*****************************************************************************
 *                                                                            *
@@ -210,15 +210,15 @@ set_init(seti, set1->match, NULL);
 *                                                                            *
 *****************************************************************************/
 
-for (member = list_head(set1); member != NULL; member = list_next(member)) {
+for (member = mac_list_head(set1); member != NULL; member = mac_list_next(member)) {
 
-   if (set_is_member(set2, list_data(member))) {
+   if (mac_set_is_member(set2, mac_list_data(member))) {
 
-      data = list_data(member);
+      data = mac_list_data(member);
 
-      if (list_ins_next(seti, list_tail(seti), data) != 0) {
+      if (mac_list_ins_next(seti, mac_list_tail(seti), data) != 0) {
 
-         set_destroy(seti);
+         mac_set_destroy(seti);
          return -1;
 
       }
@@ -233,11 +233,11 @@ return 0;
 
 /*****************************************************************************
 *                                                                            *
-*  ---------------------------- set_difference ----------------------------  *
+*  ---------------------------- mac_set_difference ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int set_difference(Set *setd, const Set *set1, const Set *set2) {
+int mac_set_difference(Set *setd, const Set *set1, const Set *set2) {
 
 ListElmt           *member;
 
@@ -249,7 +249,7 @@ void               *data;
 *                                                                            *
 *****************************************************************************/
 
-set_init(setd, set1->match, NULL);
+mac_set_init(setd, set1->match, NULL);
 
 /*****************************************************************************
 *                                                                            *
@@ -257,15 +257,15 @@ set_init(setd, set1->match, NULL);
 *                                                                            *
 *****************************************************************************/
 
-for (member = list_head(set1); member != NULL; member = list_next(member)) {
+for (member = mac_list_head(set1); member != NULL; member = mac_list_next(member)) {
 
-   if (!set_is_member(set2, list_data(member))) {
+   if (!mac_set_is_member(set2, mac_list_data(member))) {
 
-      data = list_data(member);
+      data = mac_list_data(member);
 
-      if (list_ins_next(setd, list_tail(setd), data) != 0) {
+      if (mac_list_ins_next(setd, mac_list_tail(setd), data) != 0) {
 
-         set_destroy(setd);
+         mac_set_destroy(setd);
          return -1;
 
       }
@@ -280,11 +280,11 @@ return 0;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- set_is_member ----------------------------  *
+*  ----------------------------- mac_set_is_member ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int set_is_member(const Set *set, const void *data) {
+int mac_set_is_member(const Set *set, const void *data) {
 
 ListElmt           *member;
 
@@ -294,9 +294,9 @@ ListElmt           *member;
 *                                                                            *
 *****************************************************************************/
 
-for (member = list_head(set); member != NULL; member = list_next(member)) {
+for (member = mac_list_head(set); member != NULL; member = mac_list_next(member)) {
 
-   if (set->match(data, list_data(member)))
+   if (set->match(data, mac_list_data(member)))
       return 1;
 
 }
@@ -307,11 +307,11 @@ return 0;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- set_is_subset ----------------------------  *
+*  ----------------------------- mac_set_is_subset ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int set_is_subset(const Set *set1, const Set *set2) {
+int mac_set_is_subset(const Set *set1, const Set *set2) {
 
 ListElmt           *member;
 
@@ -321,7 +321,7 @@ ListElmt           *member;
 *                                                                            *
 *****************************************************************************/
 
-if (set_size(set1) > set_size(set2))
+if (mac_set_size(set1) > mac_set_size(set2))
    return 0;
 
 /*****************************************************************************
@@ -330,9 +330,9 @@ if (set_size(set1) > set_size(set2))
 *                                                                            *
 *****************************************************************************/
 
-for (member = list_head(set1); member != NULL; member = list_next(member)) {
+for (member = mac_list_head(set1); member != NULL; member = mac_list_next(member)) {
 
-   if (!set_is_member(set2, list_data(member)))
+   if (!mac_set_is_member(set2, mac_list_data(member)))
       return 0;
 
 }
@@ -343,11 +343,11 @@ return 1;
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------ set_is_equal ----------------------------  *
+*  ------------------------------ mac_set_is_equal ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int set_is_equal(const Set *set1, const Set *set2) {
+int mac_set_is_equal(const Set *set1, const Set *set2) {
 
 /*****************************************************************************
 *                                                                            *
@@ -355,7 +355,7 @@ int set_is_equal(const Set *set1, const Set *set2) {
 *                                                                            *
 *****************************************************************************/
 
-if (set_size(set1) != set_size(set2))
+if (mac_set_size(set1) != mac_set_size(set2))
    return 0;
 
 /*****************************************************************************
@@ -364,6 +364,6 @@ if (set_size(set1) != set_size(set2))
 *                                                                            *
 *****************************************************************************/
 
-return set_is_subset(set1, set2);
+return mac_set_is_subset(set1, set2);
 
 }

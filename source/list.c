@@ -7,15 +7,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "list.h"
+#include "mac/list.h"
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------- list_init ------------------------------  *
+*  ------------------------------- mac_list_init ------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void list_init(List *list, void (*destroy)(void *data)) {
+void mac_list_init(List *list, void (*destroy)(void *data)) {
 
 /*****************************************************************************
 *                                                                            *
@@ -34,11 +34,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- list_destroy -----------------------------  *
+*  ----------------------------- mac_list_destroy -----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void list_destroy(List *list) {
+void mac_list_destroy(List *list) {
 
 void               *data;
 
@@ -48,9 +48,9 @@ void               *data;
 *                                                                            *
 *****************************************************************************/
 
-while (list_size(list) > 0) {
+while (mac_list_size(list) > 0) {
 
-   if (list_rem_next(list, NULL, (void **)&data) == 0 && list->destroy !=
+   if (mac_list_rem_next(list, NULL, (void **)&data) == 0 && list->destroy !=
       NULL) {
 
       /***********************************************************************
@@ -79,11 +79,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- list_ins_next ----------------------------  *
+*  ----------------------------- mac_list_ins_next ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int list_ins_next(List *list, ListElmt *element, const void *data) {
+int mac_list_ins_next(List *list, ListElmt *element, const void *data) {
 
 ListElmt           *new_element;
 
@@ -112,7 +112,7 @@ if (element == NULL) {
    *                                                                         *
    **************************************************************************/
 
-   if (list_size(list) == 0)
+   if (mac_list_size(list) == 0)
       list->tail = new_element;
 
    new_element->next = list->head;
@@ -150,11 +150,11 @@ return 0;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- list_rem_next ----------------------------  *
+*  ----------------------------- mac_list_rem_next ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int list_rem_next(List *list, ListElmt *element, void **data) {
+int mac_list_rem_next(List *list, ListElmt *element, void **data) {
 
 ListElmt           *old_element;
 
@@ -164,7 +164,7 @@ ListElmt           *old_element;
 *                                                                            *
 *****************************************************************************/
 
-if (list_size(list) == 0)
+if (mac_list_size(list) == 0)
    return -1;
 
 /*****************************************************************************
@@ -185,7 +185,7 @@ if (element == NULL) {
    old_element = list->head;
    list->head = list->head->next;
 
-   if (list_size(list) == 1)
+   if (mac_list_size(list) == 1)
       list->tail = NULL;
 
    }

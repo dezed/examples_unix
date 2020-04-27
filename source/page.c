@@ -24,7 +24,7 @@ int replace_page(CListElmt **current) {
 while (((Page *)(*current)->data)->reference != 0) {
 
    ((Page *)(*current)->data)->reference = 0;
-   *current = clist_next(*current);
+   *current = mac_clist_next(*current);
 
 }
 

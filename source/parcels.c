@@ -21,7 +21,7 @@ int get_parcel(PQueue *parcels, Parcel *parcel) {
 
 Parcel             *data;
 
-if (pqueue_size(parcels) == 0)
+if (pmac_queue_size(parcels) == 0)
 
    /**************************************************************************
    *                                                                         *
@@ -33,7 +33,7 @@ if (pqueue_size(parcels) == 0)
 
 else {
 
-   if (pqueue_extract(parcels, (void **)&data) != 0)
+   if (pmac_queue_extract(parcels, (void **)&data) != 0)
 
       /***********************************************************************
       *                                                                      *
@@ -89,7 +89,7 @@ if ((data = (Parcel *)malloc(sizeof(Parcel))) == NULL)
 
 memcpy(data, parcel, sizeof(Parcel));
 
-if (pqueue_insert(parcels, data) != 0)
+if (pmac_queue_insert(parcels, data) != 0)
    return -1;
 
 return 0;

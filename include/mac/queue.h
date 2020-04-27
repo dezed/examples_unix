@@ -1,21 +1,25 @@
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------- pqueue.h -------------------------------  *
+*  ------------------------------- queue.h --------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-#ifndef PQUEUE_H
-#define PQUEUE_H
+#ifndef QUEUE_H
+#define QUEUE_H
 
-#include "heap.h"
+#include <stdlib.h>
+
+#include "list.h"
 
 /*****************************************************************************
 *                                                                            *
-*  Implement priority queues as heaps.                                       *
+*  Implement queues as linked lists.                                         *
 *                                                                            *
 *****************************************************************************/
 
-typedef Heap PQueue;
+typedef List Queue;
+
+typedef Queue mac_queue_t;
 
 /*****************************************************************************
 *                                                                            *
@@ -23,16 +27,16 @@ typedef Heap PQueue;
 *                                                                            *
 *****************************************************************************/
 
-#define pqueue_init heap_init
+#define mac_queue_init mac_list_init
 
-#define pqueue_destroy heap_destroy
+#define mac_queue_destroy mac_list_destroy
 
-#define pqueue_insert heap_insert
+int mac_queue_enqueue(Queue *queue, const void *data);
 
-#define pqueue_extract heap_extract
+int mac_queue_dequeue(Queue *queue, void **data);
 
-#define pqueue_peek(pqueue) ((pqueue)->tree == NULL ? NULL : (pqueue)->tree[0])
+#define mac_queue_peek(queue) ((queue)->head == NULL ? NULL : (queue)->head->data)
 
-#define pqueue_size heap_size
+#define mac_queue_size mac_list_size
 
 #endif

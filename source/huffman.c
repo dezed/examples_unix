@@ -92,7 +92,7 @@ int                size,
 
 *tree = NULL;
 
-pqueue_init(&pqueue, compare_freq, destroy_tree);
+pmac_queue_init(&pqueue, compare_freq, destroy_tree);
 
 for (c = 0; c <= UCHAR_MAX; c++) {
 
@@ -106,7 +106,7 @@ for (c = 0; c <= UCHAR_MAX; c++) {
 
       if ((init = (BiTree *)malloc(sizeof(BiTree))) == NULL) {
 
-         pqueue_destroy(&pqueue);
+         pmac_queue_destroy(&pqueue);
          return -1;
 
       }
@@ -115,7 +115,7 @@ for (c = 0; c <= UCHAR_MAX; c++) {
 
       if ((data = (HuffNode *)malloc(sizeof(HuffNode))) == NULL) {
 
-         pqueue_destroy(&pqueue);
+         pmac_queue_destroy(&pqueue);
          return -1;
 
       }
@@ -128,7 +128,7 @@ for (c = 0; c <= UCHAR_MAX; c++) {
          free(data);
          bitree_destroy(init);
          free(init);
-         pqueue_destroy(&pqueue);
+         pmac_queue_destroy(&pqueue);
          return -1;
 
       }
@@ -139,11 +139,11 @@ for (c = 0; c <= UCHAR_MAX; c++) {
       *                                                                      *
       ***********************************************************************/
 
-      if (pqueue_insert(&pqueue, init) != 0) {
+      if (pmac_queue_insert(&pqueue, init) != 0) {
 
          bitree_destroy(init);
          free(init);
-         pqueue_destroy(&pqueue);
+         pmac_queue_destroy(&pqueue);
          return -1;
 
       }
@@ -158,7 +158,7 @@ for (c = 0; c <= UCHAR_MAX; c++) {
 *                                                                            *
 *****************************************************************************/
 
-size = pqueue_size(&pqueue);
+size = pmac_queue_size(&pqueue);
 
 for (c = 1; c <= size - 1; c++) {
 
@@ -170,7 +170,7 @@ for (c = 1; c <= size - 1; c++) {
 
    if ((merge = (BiTree *)malloc(sizeof(BiTree))) == NULL) {
 
-      pqueue_destroy(&pqueue);
+      pmac_queue_destroy(&pqueue);
       return -1;
 
    }
@@ -181,17 +181,17 @@ for (c = 1; c <= size - 1; c++) {
    *                                                                         *
    **************************************************************************/
 
-   if (pqueue_extract(&pqueue, (void **)&left) != 0) {
+   if (pmac_queue_extract(&pqueue, (void **)&left) != 0) {
 
-      pqueue_destroy(&pqueue);
+      pmac_queue_destroy(&pqueue);
       free(merge);
       return -1;
 
    }
 
-   if (pqueue_extract(&pqueue, (void **)&right) != 0) {
+   if (pmac_queue_extract(&pqueue, (void **)&right) != 0) {
 
-      pqueue_destroy(&pqueue);
+      pmac_queue_destroy(&pqueue);
       free(merge);
       return -1;
 
@@ -205,7 +205,7 @@ for (c = 1; c <= size - 1; c++) {
 
    if ((data = (HuffNode *)malloc(sizeof(HuffNode))) == NULL) {
 
-      pqueue_destroy(&pqueue);
+      pmac_queue_destroy(&pqueue);
       free(merge);
       return -1;
 
@@ -230,7 +230,7 @@ for (c = 1; c <= size - 1; c++) {
 
    if (bitree_merge(merge, left, right, data) != 0) {
 
-      pqueue_destroy(&pqueue);
+      pmac_queue_destroy(&pqueue);
       free(merge);
       return -1;
 
@@ -242,9 +242,9 @@ for (c = 1; c <= size - 1; c++) {
    *                                                                         *
    **************************************************************************/
 
-   if (pqueue_insert(&pqueue, merge) != 0) {
+   if (pmac_queue_insert(&pqueue, merge) != 0) {
 
-      pqueue_destroy(&pqueue);
+      pmac_queue_destroy(&pqueue);
       bitree_destroy(merge);
       free(merge);
       return -1;
@@ -262,16 +262,16 @@ for (c = 1; c <= size - 1; c++) {
 *                                                                            *
 *****************************************************************************/
 
-if (pqueue_extract(&pqueue, (void **)tree) != 0) {
+if (pmac_queue_extract(&pqueue, (void **)tree) != 0) {
 
-   pqueue_destroy(&pqueue);
+   pmac_queue_destroy(&pqueue);
    return -1;
 
    }
 
 else {
 
-   pqueue_destroy(&pqueue);
+   pmac_queue_destroy(&pqueue);
 
 }
 

@@ -1,23 +1,30 @@
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------- stack.h --------------------------------  *
+*  -------------------------------- heap.h --------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-#ifndef STACK_H
-#define STACK_H
-
-#include <stdlib.h>
-
-#include "list.h"
+#ifndef MAC_HEAP_H
+#define MAC_HEAP_H
 
 /*****************************************************************************
 *                                                                            *
-*  Implement stacks as linked lists.                                         *
+*  Define a structure for heaps.                                             *
 *                                                                            *
 *****************************************************************************/
 
-typedef List Stack;
+typedef struct Heap_ {
+
+int                size;
+
+int                (*compare)(const void *key1, const void *key2);
+void               (*destroy)(void *data);
+
+void               **tree;
+
+} Heap;
+
+typedef Heap mac_heap_t;
 
 /*****************************************************************************
 *                                                                            *
@@ -25,16 +32,15 @@ typedef List Stack;
 *                                                                            *
 *****************************************************************************/
 
-#define stack_init list_init
+void mac_heap_init(Heap *heap, int (*compare)(const void *key1, const void *key2),
+   void (*destroy)(void *data));
 
-#define stack_destroy list_destroy
+void mac_heap_destroy(Heap *heap);
 
-int stack_push(Stack *stack, const void *data);
+int mac_heap_insert(Heap *heap, const void *data);
 
-int stack_pop(Stack *stack, void **data);
+int mac_heap_extract(Heap *heap, void **data);
 
-#define stack_peek(stack) ((stack)->head == NULL ? NULL : (stack)->head->data)
-
-#define stack_size list_size
+#define mac_heap_size(heap) ((heap)->size)
 
 #endif

@@ -1,11 +1,11 @@
 /*****************************************************************************
 *                                                                            *
-*  -------------------------------- set.h ---------------------------------  *
+*  ------------------------------- stack.h --------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-#ifndef SET_H
-#define SET_H
+#ifndef MAC_STACK_H
+#define MAC_STACK_H
 
 #include <stdlib.h>
 
@@ -13,11 +13,13 @@
 
 /*****************************************************************************
 *                                                                            *
-*  Implement sets as linked lists.                                           *
+*  Implement stacks as linked lists.                                         *
 *                                                                            *
 *****************************************************************************/
 
-typedef List Set;
+typedef List Stack;
+
+typedef Stack mac_stack_t;
 
 /*****************************************************************************
 *                                                                            *
@@ -25,27 +27,16 @@ typedef List Set;
 *                                                                            *
 *****************************************************************************/
 
-void set_init(Set *set, int (*match)(const void *key1, const void *key2),
-   void (*destroy)(void *data));
+#define mac_stack_init mac_list_init
 
-#define set_destroy list_destroy
+#define mac_stack_destroy mac_list_destroy
 
-int set_insert(Set *set, const void *data);
+int mac_stack_push(Stack *stack, const void *data);
 
-int set_remove(Set *set, void **data);
+int mac_stack_pop(Stack *stack, void **data);
 
-int set_union(Set *setu, const Set *set1, const Set *set2);
+#define mac_stack_peek(stack) ((stack)->head == NULL ? NULL : (stack)->head->data)
 
-int set_intersection(Set *seti, const Set *set1, const Set *set2);
-
-int set_difference(Set *setd, const Set *set1, const Set *set2);
-
-int set_is_member(const Set *set, const void *data);
-
-int set_is_subset(const Set *set1, const Set *set2);
-
-int set_is_equal(const Set *set1, const Set *set2);
-
-#define set_size(set) ((set)->size)
+#define mac_stack_size mac_list_size
 
 #endif

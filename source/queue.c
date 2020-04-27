@@ -6,16 +6,16 @@
 
 #include <stdlib.h>
 
-#include "list.h"
-#include "queue.h"
+#include "mac/list.h"
+#include "mac/queue.h"
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- queue_enqueue ----------------------------  *
+*  ----------------------------- mac_queue_enqueue ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int queue_enqueue(Queue *queue, const void *data) {
+int mac_queue_enqueue(Queue *queue, const void *data) {
 
 /*****************************************************************************
 *                                                                            *
@@ -23,17 +23,17 @@ int queue_enqueue(Queue *queue, const void *data) {
 *                                                                            *
 *****************************************************************************/
 
-return list_ins_next(queue, list_tail(queue), data);
+return mac_list_ins_next(queue, mac_list_tail(queue), data);
 
 }
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- queue_dequeue ----------------------------  *
+*  ----------------------------- mac_queue_dequeue ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int queue_dequeue(Queue *queue, void **data) {
+int mac_queue_dequeue(Queue *queue, void **data) {
 
 /*****************************************************************************
 *                                                                            *
@@ -41,6 +41,6 @@ int queue_dequeue(Queue *queue, void **data) {
 *                                                                            *
 *****************************************************************************/
 
-return list_rem_next(queue, NULL, data);
+return mac_list_rem_next(queue, NULL, data);
 
 }

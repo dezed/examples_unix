@@ -41,23 +41,25 @@ int                factor;
 
 typedef BiTree BisTree;
 
+typedef BisTree mac_bistree_t;
+
 /*****************************************************************************
 *                                                                            *
 *  --------------------------- Public Interface ---------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void bistree_init(BisTree *tree, int (*compare)(const void *key1, const void
+void mac_bistree_init(BisTree *tree, int (*compare)(const void *key1, const void
    *key2), void (*destroy)(void *data));
 
-void bistree_destroy(BisTree *tree);
+void mac_bistree_destroy(BisTree *tree);
 
-int bistree_insert(BisTree *tree, const void *data);
+int mac_bistree_insert(BisTree *tree, const void *data);
 
-int bistree_remove(BisTree *tree, const void *data);
+int mac_bistree_remove(BisTree *tree, const void *data);
 
-int bistree_lookup(BisTree *tree, void **data);
+int mac_bistree_lookup(BisTree *tree, void **data);
 
-#define bistree_size(tree) ((tree)->size)
+#define mac_bistree_size(tree) ((tree)->size)
 
 #endif

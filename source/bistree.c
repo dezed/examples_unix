@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "bistree.h"
+#include "mac/bistree.h"
 
 static void destroy_right(BisTree *tree, BiTreeNode *node);
 
@@ -707,11 +707,11 @@ return retval;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- bistree_init -----------------------------  *
+*  ----------------------------- mac_bistree_init -----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void bistree_init(BisTree *tree, int (*compare)(const void *key1, const void
+void mac_bistree_init(BisTree *tree, int (*compare)(const void *key1, const void
    *key2), void (*destroy)(void *data)) {
 
 /*****************************************************************************
@@ -729,11 +729,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ---------------------------- bistree_destroy ---------------------------  *
+*  ---------------------------- mac_bistree_destroy ---------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void bistree_destroy(BisTree *tree) {
+void mac_bistree_destroy(BisTree *tree) {
 
 /*****************************************************************************
 *                                                                            *
@@ -757,11 +757,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ---------------------------- bistree_insert ----------------------------  *
+*  ---------------------------- mac_bistree_insert ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int bistree_insert(BisTree *tree, const void *data) {
+int mac_bistree_insert(BisTree *tree, const void *data) {
 
 int                balanced = 0;
 
@@ -771,11 +771,11 @@ return insert(tree, &bitree_root(tree), data, &balanced);
 
 /*****************************************************************************
 *                                                                            *
-*  ---------------------------- bistree_remove ----------------------------  *
+*  ---------------------------- mac_bistree_remove ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int bistree_remove(BisTree *tree, const void *data) {
+int mac_bistree_remove(BisTree *tree, const void *data) {
 
 return hide(tree, bitree_root(tree), data);
 
@@ -783,11 +783,11 @@ return hide(tree, bitree_root(tree), data);
 
 /*****************************************************************************
 *                                                                            *
-*  ---------------------------- bistree_lookup ----------------------------  *
+*  ---------------------------- mac_bistree_lookup ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int bistree_lookup(BisTree *tree, void **data) {
+int mac_bistree_lookup(BisTree *tree, void **data) {
 
 return lookup(tree, bitree_root(tree), data);
 

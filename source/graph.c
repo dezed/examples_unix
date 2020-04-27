@@ -37,7 +37,7 @@ graph->destroy = destroy;
 *                                                                            *
 *****************************************************************************/
 
-list_init(&graph->adjlists, NULL);
+mac_list_init(&graph->adjlists, NULL);
 
 return;
 
@@ -59,11 +59,11 @@ AdjList            *adjlist;
 *                                                                            *
 *****************************************************************************/
 
-while (list_size(&graph->adjlists) > 0) {
+while (mac_list_size(&graph->adjlists) > 0) {
 
-   if (list_rem_next(&graph->adjlists, NULL, (void **)&adjlist) == 0) {
+   if (mac_list_rem_next(&graph->adjlists, NULL, (void **)&adjlist) == 0) {
 
-      set_destroy(&adjlist->adjacent);
+      mac_set_destroy(&adjlist->adjacent);
 
       if (graph->destroy != NULL)
          graph->destroy(adjlist->vertex);
@@ -80,7 +80,7 @@ while (list_size(&graph->adjlists) > 0) {
 *                                                                            *
 *****************************************************************************/
 
-list_destroy(&graph->adjlists);
+mac_list_destroy(&graph->adjlists);
 
 /*****************************************************************************
 *                                                                            *
@@ -114,10 +114,10 @@ int                retval;
 *                                                                            *
 *****************************************************************************/
 
-for (element = list_head(&graph->adjlists); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph->adjlists); element != NULL; element =
+   mac_list_next(element)) {
 
-   if (graph->match(data, ((AdjList *)list_data(element))->vertex))
+   if (graph->match(data, ((AdjList *)mac_list_data(element))->vertex))
       return 1;
 
 }
@@ -132,9 +132,9 @@ if ((adjlist = (AdjList *)malloc(sizeof(AdjList))) == NULL)
    return -1;
 
 adjlist->vertex = (void *)data;
-set_init(&adjlist->adjacent, graph->match, graph->destroy);
+mac_set_init(&adjlist->adjacent, graph->match, graph->destroy);
 
-if ((retval = list_ins_next(&graph->adjlists, list_tail(&graph->adjlists),
+if ((retval = mac_list_ins_next(&graph->adjlists, mac_list_tail(&graph->adjlists),
    adjlist)) != 0) {
 
    return retval;
@@ -171,10 +171,10 @@ int                retval;
 *                                                                            *
 *****************************************************************************/
 
-for (element = list_head(&graph->adjlists); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph->adjlists); element != NULL; element =
+   mac_list_next(element)) {
 
-   if (graph->match(data2, ((AdjList *)list_data(element))->vertex))
+   if (graph->match(data2, ((AdjList *)mac_list_data(element))->vertex))
       break;
 
 }
@@ -182,10 +182,10 @@ for (element = list_head(&graph->adjlists); element != NULL; element =
 if (element == NULL)
    return -1;
 
-for (element = list_head(&graph->adjlists); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph->adjlists); element != NULL; element =
+   mac_list_next(element)) {
 
-   if (graph->match(data1, ((AdjList *)list_data(element))->vertex))
+   if (graph->match(data1, ((AdjList *)mac_list_data(element))->vertex))
       break;
 
 }
@@ -199,7 +199,7 @@ if (element == NULL)
 *                                                                            *
 *****************************************************************************/
 
-if ((retval = set_insert(&((AdjList *)list_data(element))->adjacent, data2))
+if ((retval = mac_set_insert(&((AdjList *)mac_list_data(element))->adjacent, data2))
    != 0) {
 
    return retval;
@@ -243,8 +243,8 @@ int                found;
 prev = NULL;
 found = 0;
 
-for (element = list_head(&graph->adjlists); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph->adjlists); element != NULL; element =
+   mac_list_next(element)) {
 
    /**************************************************************************
    *                                                                         *
@@ -252,7 +252,7 @@ for (element = list_head(&graph->adjlists); element != NULL; element =
    *                                                                         *
    **************************************************************************/
 
-   if (set_is_member(&((AdjList *)list_data(element))->adjacent, *data))
+   if (mac_set_is_member(&((AdjList *)mac_list_data(element))->adjacent, *data))
       return -1;
 
    /**************************************************************************
@@ -261,7 +261,7 @@ for (element = list_head(&graph->adjlists); element != NULL; element =
    *                                                                         *
    **************************************************************************/
 
-   if (graph->match(*data, ((AdjList *)list_data(element))->vertex)) {
+   if (graph->match(*data, ((AdjList *)mac_list_data(element))->vertex)) {
  
       temp = element;
       found = 1;
@@ -294,7 +294,7 @@ if (!found)
 *                                                                            *
 *****************************************************************************/
 
-if (set_size(&((AdjList *)list_data(temp))->adjacent) > 0)
+if (mac_set_size(&((AdjList *)mac_list_data(temp))->adjacent) > 0)
    return -1;
 
 /*****************************************************************************
@@ -303,7 +303,7 @@ if (set_size(&((AdjList *)list_data(temp))->adjacent) > 0)
 *                                                                            *
 *****************************************************************************/
 
-if (list_rem_next(&graph->adjlists, prev, (void **)&adjlist) != 0)
+if (mac_list_rem_next(&graph->adjlists, prev, (void **)&adjlist) != 0)
    return -1;
 
 /*****************************************************************************
@@ -343,10 +343,10 @@ ListElmt           *element;
 *                                                                            *
 *****************************************************************************/
 
-for (element = list_head(&graph->adjlists); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph->adjlists); element != NULL; element =
+   mac_list_next(element)) {
 
-   if (graph->match(data1, ((AdjList *)list_data(element))->vertex))
+   if (graph->match(data1, ((AdjList *)mac_list_data(element))->vertex))
       break;
 
 }
@@ -360,7 +360,7 @@ if (element == NULL)
 *                                                                            *
 *****************************************************************************/
 
-if (set_remove(&((AdjList *)list_data(element))->adjacent, data2) != 0)
+if (mac_set_remove(&((AdjList *)mac_list_data(element))->adjacent, data2) != 0)
    return -1;
 
 /*****************************************************************************
@@ -394,10 +394,10 @@ ListElmt           *element,
 
 prev = NULL;
 
-for (element = list_head(&graph->adjlists); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph->adjlists); element != NULL; element =
+   mac_list_next(element)) {
 
-   if (graph->match(data, ((AdjList *)list_data(element))->vertex))
+   if (graph->match(data, ((AdjList *)mac_list_data(element))->vertex))
       break;
 
    prev = element;
@@ -419,7 +419,7 @@ if (element == NULL)
 *                                                                            *
 *****************************************************************************/
 
-*adjlist = list_data(element);
+*adjlist = mac_list_data(element);
 
 return 0;
 
@@ -445,10 +445,10 @@ ListElmt           *element,
 
 prev = NULL;
 
-for (element = list_head(&graph->adjlists); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph->adjlists); element != NULL; element =
+   mac_list_next(element)) {
 
-   if (graph->match(data1, ((AdjList *)list_data(element))->vertex))
+   if (graph->match(data1, ((AdjList *)mac_list_data(element))->vertex))
       break;
 
    prev = element;
@@ -470,6 +470,6 @@ if (element == NULL)
 *                                                                            *
 *****************************************************************************/
 
-return set_is_member(&((AdjList *)list_data(element))->adjacent, data2);
+return mac_set_is_member(&((AdjList *)mac_list_data(element))->adjacent, data2);
 
 }

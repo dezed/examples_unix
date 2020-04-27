@@ -39,7 +39,7 @@ if ((htbl->table = (List *)malloc(buckets * sizeof(List))) == NULL)
 htbl->buckets = buckets;
 
 for (i = 0; i < htbl->buckets; i++)
-   list_init(&htbl->table[i], destroy);
+   mac_list_init(&htbl->table[i], destroy);
 
 /*****************************************************************************
 *                                                                            *
@@ -81,7 +81,7 @@ int                i;
 
 for (i = 0; i < htbl->buckets; i++) {
 
-   list_destroy(&htbl->table[i]);
+   mac_list_destroy(&htbl->table[i]);
 
 }
 
@@ -143,7 +143,7 @@ bucket = htbl->h(data) % htbl->buckets;
 *                                                                            *
 *****************************************************************************/
 
-if ((retval = list_ins_next(&htbl->table[bucket], NULL, data)) == 0)
+if ((retval = mac_list_ins_next(&htbl->table[bucket], NULL, data)) == 0)
    htbl->size++;
 
 return retval;
@@ -179,10 +179,10 @@ bucket = htbl->h(*data) % htbl->buckets;
 
 prev = NULL;
 
-for (element = list_head(&htbl->table[bucket]); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&htbl->table[bucket]); element != NULL; element =
+   mac_list_next(element)) {
 
-   if (htbl->match(*data, list_data(element))) {
+   if (htbl->match(*data, mac_list_data(element))) {
 
       /***********************************************************************
       *                                                                      *
@@ -190,7 +190,7 @@ for (element = list_head(&htbl->table[bucket]); element != NULL; element =
       *                                                                      *
       ***********************************************************************/
 
-      if (list_rem_next(&htbl->table[bucket], prev, data) == 0) {
+      if (mac_list_rem_next(&htbl->table[bucket], prev, data) == 0) {
 
          htbl->size--;
          return 0;
@@ -245,10 +245,10 @@ bucket = htbl->h(*data) % htbl->buckets;
 *                                                                            *
 *****************************************************************************/
 
-for (element = list_head(&htbl->table[bucket]); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&htbl->table[bucket]); element != NULL; element =
+   mac_list_next(element)) {
 
-   if (htbl->match(*data, list_data(element))) {
+   if (htbl->match(*data, mac_list_data(element))) {
 
       /***********************************************************************
       *                                                                      *
@@ -256,7 +256,7 @@ for (element = list_head(&htbl->table[bucket]); element != NULL; element =
       *                                                                      *
       ***********************************************************************/
 
-      *data = list_data(element);
+      *data = mac_list_data(element);
       return 0;
 
    }

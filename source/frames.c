@@ -20,7 +20,7 @@ int alloc_frame(List *frames) {
 int                frame_number,
                    *data;
 
-if (list_size(frames) == 0)
+if (mac_list_size(frames) == 0)
 
    /**************************************************************************
    *                                                                         *
@@ -32,7 +32,7 @@ if (list_size(frames) == 0)
 
 else {
 
-   if (list_rem_next(frames, NULL, (void **)&data) != 0)
+   if (mac_list_rem_next(frames, NULL, (void **)&data) != 0)
 
       /***********************************************************************
       *                                                                      *
@@ -88,7 +88,7 @@ if ((data = (int *)malloc(sizeof(int))) == NULL)
 
 *data = frame_number;
 
-if (list_ins_next(frames, NULL, data) != 0)
+if (mac_list_ins_next(frames, NULL, data) != 0)
    return -1;
 
 return 0;

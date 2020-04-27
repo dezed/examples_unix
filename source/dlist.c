@@ -7,15 +7,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "dlist.h"
+#include "mac/dlist.h"
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------ dlist_init ------------------------------  *
+*  ------------------------------ mac_dlist_init ------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void dlist_init(DList *list, void (*destroy)(void *data)) {
+void mac_dlist_init(DList *list, void (*destroy)(void *data)) {
 
 /*****************************************************************************
 *                                                                            *
@@ -34,11 +34,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ---------------------------- dlist_destroy -----------------------------  *
+*  ---------------------------- mac_dlist_destroy -----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void dlist_destroy(DList *list) {
+void mac_dlist_destroy(DList *list) {
 
 void               *data;
 
@@ -48,9 +48,9 @@ void               *data;
 *                                                                            *
 *****************************************************************************/
 
-while (dlist_size(list) > 0) {
+while (mac_dlist_size(list) > 0) {
 
-   if (dlist_remove(list, dlist_tail(list), (void **)&data) == 0 && list->
+   if (mac_dlist_remove(list, mac_dlist_tail(list), (void **)&data) == 0 && list->
       destroy != NULL) {
 
       /***********************************************************************
@@ -79,11 +79,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ---------------------------- dlist_ins_next ----------------------------  *
+*  ---------------------------- mac_dlist_ins_next ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int dlist_ins_next(DList *list, DListElmt *element, const void *data) {
+int mac_dlist_ins_next(DList *list, DListElmt *element, const void *data) {
 
 DListElmt          *new_element;
 
@@ -93,7 +93,7 @@ DListElmt          *new_element;
 *                                                                            *
 *****************************************************************************/
 
-if (element == NULL && dlist_size(list) != 0)
+if (element == NULL && mac_dlist_size(list) != 0)
    return -1;
 
 /*****************************************************************************
@@ -113,7 +113,7 @@ if ((new_element = (DListElmt *)malloc(sizeof(DListElmt))) == NULL)
 
 new_element->data = (void *)data;
 
-if (dlist_size(list) == 0) {
+if (mac_dlist_size(list) == 0) {
 
    /**************************************************************************
    *                                                                         *
@@ -162,12 +162,12 @@ return 0;
 
 /*****************************************************************************
 *                                                                            *
-*  ---------------------------- dlist_ins_prev ----------------------------  *
+*  ---------------------------- mac_dlist_ins_prev ----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
 
-int dlist_ins_prev(DList *list, DListElmt *element, const void *data) {
+int mac_dlist_ins_prev(DList *list, DListElmt *element, const void *data) {
 
 DListElmt          *new_element;
 
@@ -177,7 +177,7 @@ DListElmt          *new_element;
 *                                                                            *
 *****************************************************************************/
 
-if (element == NULL && dlist_size(list) != 0)
+if (element == NULL && mac_dlist_size(list) != 0)
    return -1;
 
 /*****************************************************************************
@@ -197,7 +197,7 @@ if ((new_element = (DListElmt *)malloc(sizeof(DListElmt))) == NULL)
 
 new_element->data = (void *)data;
 
-if (dlist_size(list) == 0) {
+if (mac_dlist_size(list) == 0) {
 
    /**************************************************************************
    *                                                                         *
@@ -248,11 +248,11 @@ return 0;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- dlist_remove -----------------------------  *
+*  ----------------------------- mac_dlist_remove -----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int dlist_remove(DList *list, DListElmt *element, void **data) {
+int mac_dlist_remove(DList *list, DListElmt *element, void **data) {
 
 /*****************************************************************************
 *                                                                            *
@@ -260,7 +260,7 @@ int dlist_remove(DList *list, DListElmt *element, void **data) {
 *                                                                            *
 *****************************************************************************/
 
-if (element == NULL || dlist_size(list) == 0)
+if (element == NULL || mac_dlist_size(list) == 0)
    return -1;
 
 /*****************************************************************************

@@ -1,28 +1,21 @@
 /*****************************************************************************
 *                                                                            *
-*  -------------------------------- heap.h --------------------------------  *
+*  ------------------------------- pqueue.h -------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-#ifndef HEAP_H
-#define HEAP_H
+#ifndef PQUEUE_H
+#define PQUEUE_H
+
+#include "heap.h"
 
 /*****************************************************************************
 *                                                                            *
-*  Define a structure for heaps.                                             *
+*  Implement priority queues as heaps.                                       *
 *                                                                            *
 *****************************************************************************/
 
-typedef struct Heap_ {
-
-int                size;
-
-int                (*compare)(const void *key1, const void *key2);
-void               (*destroy)(void *data);
-
-void               **tree;
-
-} Heap;
+typedef Heap PQueue;
 
 /*****************************************************************************
 *                                                                            *
@@ -30,15 +23,16 @@ void               **tree;
 *                                                                            *
 *****************************************************************************/
 
-void heap_init(Heap *heap, int (*compare)(const void *key1, const void *key2),
-   void (*destroy)(void *data));
+#define pmac_queue_init mac_heap_init
 
-void heap_destroy(Heap *heap);
+#define pmac_queue_destroy mac_heap_destroy
 
-int heap_insert(Heap *heap, const void *data);
+#define pmac_queue_insert mac_heap_insert
 
-int heap_extract(Heap *heap, void **data);
+#define pmac_queue_extract mac_heap_extract
 
-#define heap_size(heap) ((heap)->size)
+#define pmac_queue_peek(pqueue) ((pqueue)->tree == NULL ? NULL : (pqueue)->tree[0])
+
+#define pmac_queue_size mac_heap_size
 
 #endif

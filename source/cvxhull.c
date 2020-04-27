@@ -38,11 +38,11 @@ int                count;
 *                                                                            *
 *****************************************************************************/
 
-min = list_data(list_head(P));
+min = mac_list_data(mac_list_head(P));
 
-for (element = list_head(P); element != NULL; element = list_next(element)) {
+for (element = mac_list_head(P); element != NULL; element = mac_list_next(element)) {
 
-   p0 = list_data(element);
+   p0 = mac_list_data(element);
 
    /**************************************************************************
    *                                                                         *
@@ -53,7 +53,7 @@ for (element = list_head(P); element != NULL; element = list_next(element)) {
    if (p0->y < min->y) {
 
       min = p0;
-      low = list_data(element);
+      low = mac_list_data(element);
 
       }
 
@@ -68,7 +68,7 @@ for (element = list_head(P); element != NULL; element = list_next(element)) {
       if (p0->y == min->y && p0->x < min->x) {
 
          min = p0;
-         low = list_data(element);
+         low = mac_list_data(element);
 
       }
 
@@ -82,7 +82,7 @@ for (element = list_head(P); element != NULL; element = list_next(element)) {
 *                                                                            *
 *****************************************************************************/
 
-list_init(polygon, NULL);
+mac_list_init(polygon, NULL);
 
 /*****************************************************************************
 *                                                                            *
@@ -100,9 +100,9 @@ do {
    *                                                                         *
    **************************************************************************/
 
-   if (list_ins_next(polygon, list_tail(polygon), p0) != 0) {
+   if (mac_list_ins_next(polygon, mac_list_tail(polygon), p0) != 0) {
 
-      list_destroy(polygon);
+      mac_list_destroy(polygon);
       return -1;
 
    }
@@ -115,8 +115,8 @@ do {
 
    count = 0;
 
-   for (element = list_head(P); element != NULL; element =
-      list_next(element)) {
+   for (element = mac_list_head(P); element != NULL; element =
+      mac_list_next(element)) {
 
       /***********************************************************************
       *                                                                      *
@@ -124,7 +124,7 @@ do {
       *                                                                      *
       ***********************************************************************/
 
-      if ((pi = list_data(element)) == p0)
+      if ((pi = mac_list_data(element)) == p0)
          continue;
 
       /***********************************************************************
@@ -144,7 +144,7 @@ do {
 
       if (count == 1) {
 
-         pc = list_data(element);
+         pc = mac_list_data(element);
          continue;
 
       }

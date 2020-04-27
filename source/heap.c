@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "heap.h"
+#include "mac/heap.h"
 
 /*****************************************************************************
 *                                                                            *
@@ -15,19 +15,19 @@
 *                                                                            *
 *****************************************************************************/
 
-#define heap_parent(npos) ((int)(((npos) - 1) / 2))
+#define mac_heap_parent(npos) ((int)(((npos) - 1) / 2))
 
-#define heap_left(npos) (((npos) * 2) + 1)
+#define mac_heap_left(npos) (((npos) * 2) + 1)
 
-#define heap_right(npos) (((npos) * 2) + 2)
+#define mac_heap_right(npos) (((npos) * 2) + 2)
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------- heap_init ------------------------------  *
+*  ------------------------------- mac_heap_init ------------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void heap_init(Heap *heap, int (*compare)(const void *key1, const void *key2),
+void mac_heap_init(Heap *heap, int (*compare)(const void *key1, const void *key2),
    void (*destroy)(void *data)) {
 
 /*****************************************************************************
@@ -47,11 +47,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- heap_destroy -----------------------------  *
+*  ----------------------------- mac_heap_destroy -----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-void heap_destroy(Heap *heap) {
+void mac_heap_destroy(Heap *heap) {
 
 int                i;
 
@@ -63,7 +63,7 @@ int                i;
 
 if (heap->destroy != NULL) {
 
-   for (i = 0; i < heap_size(heap); i++) {
+   for (i = 0; i < mac_heap_size(heap); i++) {
 
       /***********************************************************************
       *                                                                      *
@@ -99,11 +99,11 @@ return;
 
 /*****************************************************************************
 *                                                                            *
-*  ------------------------------ heap_insert -----------------------------  *
+*  ------------------------------ mac_heap_insert -----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int heap_insert(Heap *heap, const void *data) {
+int mac_heap_insert(Heap *heap, const void *data) {
 
 void               *temp;
 
@@ -116,7 +116,7 @@ int                ipos,
 *                                                                            *
 *****************************************************************************/
 
-if ((temp = (void **)realloc(heap->tree, (heap_size(heap) + 1) * sizeof
+if ((temp = (void **)realloc(heap->tree, (mac_heap_size(heap) + 1) * sizeof
    (void *))) == NULL) {
 
    return -1;
@@ -135,7 +135,7 @@ else {
 *                                                                            *
 *****************************************************************************/
 
-heap->tree[heap_size(heap)] = (void *)data;
+heap->tree[mac_heap_size(heap)] = (void *)data;
 
 /*****************************************************************************
 *                                                                            *
@@ -143,8 +143,8 @@ heap->tree[heap_size(heap)] = (void *)data;
 *                                                                            *
 *****************************************************************************/
 
-ipos = heap_size(heap);
-ppos = heap_parent(ipos);
+ipos = mac_heap_size(heap);
+ppos = mac_heap_parent(ipos);
 
 while (ipos > 0 && heap->compare(heap->tree[ppos], heap->tree[ipos]) < 0) {
 
@@ -165,7 +165,7 @@ while (ipos > 0 && heap->compare(heap->tree[ppos], heap->tree[ipos]) < 0) {
    **************************************************************************/
 
    ipos = ppos;
-   ppos = heap_parent(ipos);
+   ppos = mac_heap_parent(ipos);
 
 }
 
@@ -183,11 +183,11 @@ return 0;
 
 /*****************************************************************************
 *                                                                            *
-*  ----------------------------- heap_extract -----------------------------  *
+*  ----------------------------- mac_heap_extract -----------------------------  *
 *                                                                            *
 *****************************************************************************/
 
-int heap_extract(Heap *heap, void **data) {
+int mac_heap_extract(Heap *heap, void **data) {
 
 void               *save,
                    *temp;
@@ -203,7 +203,7 @@ int                ipos,
 *                                                                            *
 *****************************************************************************/
 
-if (heap_size(heap) == 0)
+if (mac_heap_size(heap) == 0)
    return -1;
 
 /*****************************************************************************
@@ -220,11 +220,11 @@ if (heap_size(heap) == 0)
 *                                                                            *
 *****************************************************************************/
 
-save = heap->tree[heap_size(heap) - 1];
+save = heap->tree[mac_heap_size(heap) - 1];
 
-if (heap_size(heap) - 1 > 0) {
+if (mac_heap_size(heap) - 1 > 0) {
 
-   if ((temp = (void **)realloc(heap->tree, (heap_size(heap) - 1) * sizeof
+   if ((temp = (void **)realloc(heap->tree, (mac_heap_size(heap) - 1) * sizeof
       (void *))) == NULL) {
 
       return -1;
@@ -277,8 +277,8 @@ heap->tree[0] = save;
 *****************************************************************************/
 
 ipos = 0;
-lpos = heap_left(ipos);
-rpos = heap_right(ipos);
+lpos = mac_heap_left(ipos);
+rpos = mac_heap_right(ipos);
 
 while (1) {
 
@@ -288,10 +288,10 @@ while (1) {
    *                                                                         *
    **************************************************************************/
 
-   lpos = heap_left(ipos);
-   rpos = heap_right(ipos);
+   lpos = mac_heap_left(ipos);
+   rpos = mac_heap_right(ipos);
 
-   if (lpos < heap_size(heap) && heap->compare(heap->tree[lpos], heap->
+   if (lpos < mac_heap_size(heap) && heap->compare(heap->tree[lpos], heap->
       tree[ipos]) > 0) {
 
       mpos = lpos;
@@ -304,7 +304,7 @@ while (1) {
 
    }
 
-   if (rpos < heap_size(heap) && heap->compare(heap->tree[rpos], heap->
+   if (rpos < mac_heap_size(heap) && heap->compare(heap->tree[rpos], heap->
       tree[mpos]) > 0) {
 
       mpos = rpos;

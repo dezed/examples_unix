@@ -36,10 +36,10 @@ ListElmt           *element,
 *                                                                            *
 *****************************************************************************/
 
-for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph_adjlists(graph)); element != NULL; element =
+   mac_list_next(element)) {
 
-   clr_vertex = ((AdjList *)list_data(element))->vertex;
+   clr_vertex = ((AdjList *)mac_list_data(element))->vertex;
 
    if (graph->match(clr_vertex, start)) {
 
@@ -75,18 +75,18 @@ for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
 *                                                                            *
 *****************************************************************************/
 
-queue_init(&queue, NULL);
+mac_queue_init(&queue, NULL);
 
 if (graph_adjlist(graph, start, &clr_adjlist) != 0) {
 
-   queue_destroy(&queue);
+   mac_queue_destroy(&queue);
    return -1;
 
 }
 
-if (queue_enqueue(&queue, clr_adjlist) != 0) {
+if (mac_queue_enqueue(&queue, clr_adjlist) != 0) {
 
-   queue_destroy(&queue);
+   mac_queue_destroy(&queue);
    return -1;
 
 }
@@ -97,9 +97,9 @@ if (queue_enqueue(&queue, clr_adjlist) != 0) {
 *                                                                            *
 *****************************************************************************/
 
-while (queue_size(&queue) > 0) {
+while (mac_queue_size(&queue) > 0) {
 
-   adjlist = queue_peek(&queue);
+   adjlist = mac_queue_peek(&queue);
 
    /**************************************************************************
    *                                                                         *
@@ -107,10 +107,10 @@ while (queue_size(&queue) > 0) {
    *                                                                         *
    **************************************************************************/
 
-   for (member = list_head(&adjlist->adjacent); member != NULL; member =
-      list_next(member)) {
+   for (member = mac_list_head(&adjlist->adjacent); member != NULL; member =
+      mac_list_next(member)) {
 
-      adj_vertex = list_data(member);
+      adj_vertex = mac_list_data(member);
 
       /***********************************************************************
       *                                                                      *
@@ -120,7 +120,7 @@ while (queue_size(&queue) > 0) {
 
       if (graph_adjlist(graph, adj_vertex, &clr_adjlist) != 0) {
 
-         queue_destroy(&queue);
+         mac_queue_destroy(&queue);
          return -1;
 
       }
@@ -138,9 +138,9 @@ while (queue_size(&queue) > 0) {
          clr_vertex->color = gray;
          clr_vertex->hops = ((BfsVertex *)adjlist->vertex)->hops + 1;
 
-         if (queue_enqueue(&queue, clr_adjlist) != 0) {
+         if (mac_queue_enqueue(&queue, clr_adjlist) != 0) {
 
-            queue_destroy(&queue);
+            mac_queue_destroy(&queue);
             return -1;
 
          }
@@ -155,7 +155,7 @@ while (queue_size(&queue) > 0) {
    *                                                                         *
    **************************************************************************/
 
-   if (queue_dequeue(&queue, (void **)&adjlist) == 0) {
+   if (mac_queue_dequeue(&queue, (void **)&adjlist) == 0) {
 
       ((BfsVertex *)adjlist->vertex)->color = black;
 
@@ -163,14 +163,14 @@ while (queue_size(&queue) > 0) {
 
    else {
 
-      queue_destroy(&queue);
+      mac_queue_destroy(&queue);
       return -1;
 
    }
 
 }
 
-queue_destroy(&queue);
+mac_queue_destroy(&queue);
 
 /*****************************************************************************
 *                                                                            *
@@ -178,10 +178,10 @@ queue_destroy(&queue);
 *                                                                            *
 *****************************************************************************/
 
-list_init(hops, NULL);
+mac_list_init(hops, NULL);
 
-for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph_adjlists(graph)); element != NULL; element =
+   mac_list_next(element)) {
 
    /**************************************************************************
    *                                                                         *
@@ -189,13 +189,13 @@ for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
    *                                                                         *
    **************************************************************************/
 
-   clr_vertex = ((AdjList *)list_data(element))->vertex;
+   clr_vertex = ((AdjList *)mac_list_data(element))->vertex;
 
    if (clr_vertex->hops != -1) {
 
-      if (list_ins_next(hops, list_tail(hops), clr_vertex) != 0) {
+      if (mac_list_ins_next(hops, mac_list_tail(hops), clr_vertex) != 0) {
 
-         list_destroy(hops);
+         mac_list_destroy(hops);
          return -1;
 
       }

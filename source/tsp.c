@@ -41,7 +41,7 @@ int                found,
 *                                                                            *
 *****************************************************************************/
 
-list_init(tour, NULL);
+mac_list_init(tour, NULL);
 
 /*****************************************************************************
 *                                                                            *
@@ -51,10 +51,10 @@ list_init(tour, NULL);
 
 found = 0;
 
-for (element = list_head(vertices); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(vertices); element != NULL; element =
+   mac_list_next(element)) {
 
-   tsp_vertex = list_data(element);
+   tsp_vertex = mac_list_data(element);
 
    if (match(tsp_vertex, start)) {
 
@@ -64,9 +64,9 @@ for (element = list_head(vertices); element != NULL; element =
       *                                                                      *
       ***********************************************************************/
 
-      if (list_ins_next(tour, list_tail(tour), tsp_vertex) != 0) {
+      if (mac_list_ins_next(tour, mac_list_tail(tour), tsp_vertex) != 0) {
 
-         list_destroy(tour);
+         mac_list_destroy(tour);
          return -1;
 
       }
@@ -114,7 +114,7 @@ for (element = list_head(vertices); element != NULL; element =
 
 if (!found) {
 
-   list_destroy(tour);
+   mac_list_destroy(tour);
    return -1;
 
 }
@@ -127,7 +127,7 @@ if (!found) {
 
 i = 0;
 
-while (i < list_size(vertices) - 1) {
+while (i < mac_list_size(vertices) - 1) {
 
    /**************************************************************************
    *                                                                         *
@@ -137,10 +137,10 @@ while (i < list_size(vertices) - 1) {
 
    minimum = DBL_MAX;
 
-   for (element = list_head(vertices); element != NULL; element =
-      list_next(element)) {
+   for (element = mac_list_head(vertices); element != NULL; element =
+      mac_list_next(element)) {
 
-      tsp_vertex = list_data(element);
+      tsp_vertex = mac_list_data(element);
 
       if (tsp_vertex->color == white) {
 
@@ -180,9 +180,9 @@ while (i < list_size(vertices) - 1) {
    *                                                                         *
    **************************************************************************/
 
-   if (list_ins_next(tour, list_tail(tour), selection) != 0) {
+   if (mac_list_ins_next(tour, mac_list_tail(tour), selection) != 0) {
 
-      list_destroy(tour);
+      mac_list_destroy(tour);
       return -1;
 
    }
@@ -203,9 +203,9 @@ while (i < list_size(vertices) - 1) {
 *                                                                            *
 *****************************************************************************/
 
-if (list_ins_next(tour, list_tail(tour), tsp_start) != 0) {
+if (mac_list_ins_next(tour, mac_list_tail(tour), tsp_start) != 0) {
 
-   list_destroy(tour);
+   mac_list_destroy(tour);
    return -1;
 
 }

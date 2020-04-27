@@ -33,8 +33,8 @@ ListElmt           *member;
 
 ((DfsVertex *)adjlist->vertex)->color = gray;
 
-for (member = list_head(&adjlist->adjacent); member != NULL; member =
-   list_next(member)) {
+for (member = mac_list_head(&adjlist->adjacent); member != NULL; member =
+   mac_list_next(member)) {
 
    /**************************************************************************
    *                                                                         *
@@ -42,7 +42,7 @@ for (member = list_head(&adjlist->adjacent); member != NULL; member =
    *                                                                         *
    **************************************************************************/
 
-   adj_vertex = list_data(member);
+   adj_vertex = mac_list_data(member);
 
    if (graph_adjlist(graph, adj_vertex, &clr_adjlist) != 0)
       return -1;
@@ -72,7 +72,7 @@ for (member = list_head(&adjlist->adjacent); member != NULL; member =
 
 ((DfsVertex *)adjlist->vertex)->color = black;
 
-if (list_ins_next(ordered, NULL, (DfsVertex *)adjlist->vertex) != 0)
+if (mac_list_ins_next(ordered, NULL, (DfsVertex *)adjlist->vertex) != 0)
    return -1;
 
 return 0;
@@ -97,10 +97,10 @@ ListElmt           *element;
 *                                                                            *
 *****************************************************************************/
 
-for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph_adjlists(graph)); element != NULL; element =
+   mac_list_next(element)) {
 
-   vertex = ((AdjList *)list_data(element))->vertex;
+   vertex = ((AdjList *)mac_list_data(element))->vertex;
    vertex->color = white;
 
 }
@@ -111,10 +111,10 @@ for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
 *                                                                            *
 *****************************************************************************/
 
-list_init(ordered, NULL);
+mac_list_init(ordered, NULL);
 
-for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
-   list_next(element)) {
+for (element = mac_list_head(&graph_adjlists(graph)); element != NULL; element =
+   mac_list_next(element)) {
 
    /**************************************************************************
    *                                                                         *
@@ -122,13 +122,13 @@ for (element = list_head(&graph_adjlists(graph)); element != NULL; element =
    *                                                                         *
    **************************************************************************/
 
-   vertex = ((AdjList *)list_data(element))->vertex;
+   vertex = ((AdjList *)mac_list_data(element))->vertex;
 
    if (vertex->color == white) {
 
-      if (dfs_main(graph, (AdjList *)list_data(element), ordered) != 0) {
+      if (dfs_main(graph, (AdjList *)mac_list_data(element), ordered) != 0) {
 
-         list_destroy(ordered);
+         mac_list_destroy(ordered);
          return -1;
 
       }

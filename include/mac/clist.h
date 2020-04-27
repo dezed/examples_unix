@@ -45,20 +45,20 @@ CListElmt          *head;
 *                                                                            *
 *****************************************************************************/
 
-void clist_init(CList *list, void (*destroy)(void *data));
+void mac_clist_init(CList *list, void (*destroy)(void *data));
 
-void clist_destroy(CList *list);
+void mac_clist_destroy(CList *list);
 
-int clist_ins_next(CList *list, CListElmt *element, const void *data);
+int mac_clist_ins_next(CList *list, CListElmt *element, const void *data);
 
-int clist_rem_next(CList *list, CListElmt *element, void **data);
+int mac_clist_rem_next(CList *list, CListElmt *element, void **data);
 
-#define clist_size(list) ((list)->size)
+#define mac_clist_size(list) ((list)->size)
 
-#define clist_head(list) ((list)->head)
+#define mac_clist_head(list) ((list)->head)
 
-#define clist_data(element) ((element)->data)
+#define mac_clist_data(element) ((element)->data)
 
-#define clist_next(element) ((element)->next)
+#define mac_clist_next(element) ((element)->next)
 
 #endif
