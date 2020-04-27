@@ -3,6 +3,7 @@
 #include "mac/list.h"
 #include "mac/dlist.h"
 #include "mac/queue.h"
+#include "mac/cvector.h"
 
 typedef struct TF
 {
@@ -125,6 +126,34 @@ int test_list(TF* tf)
 	return 0;
 }
 
+int test_cvector( TF* tf )
+{
+
+	size_t i;
+	cvector_t v;
+
+	cvector_init( &v, sizeof(int) );
+
+	for( i = 0; i < 50; ++i )
+	{
+		cvector_push_back( &v, &i );
+	}
+
+
+	for( i = 0; i < 50; ++i )
+	{
+		int* tmp = NULL;
+
+		tmp = cvector_element_at( &v, i );
+
+		TF_TEST( tf, i==*tmp );
+	}
+
+
+	cvector_finish( &v );
+	return 0;
+}
+
 int main()
 {
 	TF tf;
@@ -139,6 +168,10 @@ int main()
 
 	if( 1 )
 		test_queue(&tf);
+
+
+	if( 1 )
+		test_cvector( &tf );
 
 	TF_finish( &tf );
 
