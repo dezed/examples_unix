@@ -131,11 +131,14 @@ int main()
 
 	TF_init( &tf );
 
-	test_list(&tf);
+	if( 1 )
+		test_list(&tf);
 
-	test_dlist(&tf);
+	if( 1 )
+		test_dlist(&tf);
 
-	test_queue(&tf);
+	if( 1 )
+		test_queue(&tf);
 
 	TF_finish( &tf );
 

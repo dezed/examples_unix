@@ -64,7 +64,12 @@ int mac_dlist_ins_next(DList *list, DListElmt *element, const void *data);
 
 int mac_dlist_ins_prev(DList *list, DListElmt *element, const void *data);
 
-int mac_dlist_remove(DList *list, DListElmt *element, void **data);
+int mac_dlist_remove(DList *list, DListElmt *element
+#if 0
+		, void **data
+#endif
+		);
+
 
 #define mac_dlist_size(list) ((list)->size)
 

@@ -68,20 +68,20 @@ void mac_dlist_destroy(DList *list) {
 	 *                                                                            *
 	 *****************************************************************************/
 
-	while (mac_dlist_size(list) > 0) {
+	while (mac_dlist_size(list) > 0)
+       	{
+		mac_dlist_node_t* node = mac_dlist_tail( list );
+		data = mac_dlist_data( node );
 
-		if (mac_dlist_remove(list, mac_dlist_tail(list), (void **)&data) == 0 && list->
-				destroy != NULL) {
+		if( list->destroy )
+			list->destroy( data );
 
-			/***********************************************************************
-			 *                                                                      *
-			 *  Call a user-defined function to free dynamically allocated data.    *
-			 *                                                                      *
-			 ***********************************************************************/
+		mac_dlist_remove(list, node
+#if 0
+				, (void **)&data
+#endif
+				); 
 
-			list->destroy(data);
-
-		}
 
 	}
 
@@ -274,7 +274,7 @@ int mac_dlist_ins_next(DList *list, DListElmt *element, const void *data) {
  *                                                                            *
  *****************************************************************************/
 
-
+#if 0
 int mac_dlist_ins_prev(DList *list, DListElmt *element, const void *data) {
 
 	DListElmt          *new_element;
@@ -357,8 +357,8 @@ int mac_dlist_ins_prev(DList *list, DListElmt *element, const void *data) {
 	return 0;
 
 }
-
-int mac_dlist_ins_prev2(DList *list, DListElmt *element, const void *data) {
+#else
+int mac_dlist_ins_prev(DList *list, DListElmt *element, const void *data) {
 
 	DListElmt          *new_element;
 
@@ -440,7 +440,7 @@ int mac_dlist_ins_prev2(DList *list, DListElmt *element, const void *data) {
 	return 0;
 
 }
-
+#endif
 
 /*****************************************************************************
  *                                                                            *
@@ -448,7 +448,11 @@ int mac_dlist_ins_prev2(DList *list, DListElmt *element, const void *data) {
  *                                                                            *
  *****************************************************************************/
 
-int mac_dlist_remove(DList *list, DListElmt *element, void **data) {
+int mac_dlist_remove(DList *list, DListElmt *element
+#if 0
+		, void **data
+#endif
+		) {
 
 	/*****************************************************************************
 	 *                                                                            *
@@ -465,7 +469,9 @@ int mac_dlist_remove(DList *list, DListElmt *element, void **data) {
 	 *                                                                            *
 	 *****************************************************************************/
 
+#if 0
 	*data = element->data;
+#endif
 
 	if (element == list->head) {
 
@@ -507,8 +513,9 @@ int mac_dlist_remove(DList *list, DListElmt *element, void **data) {
 	 *                                                                            *
 	 *****************************************************************************/
 
-	free(element);
+	free( element->data );
 
+	free(element);
 	/*****************************************************************************
 	 *                                                                            *
 	 *  Adjust the size of the list to account for the removed element.           *
