@@ -16,7 +16,7 @@
 *                                                                            *
 *****************************************************************************/
 
-void mac_set_init(Set *set, int (*match)(const void *key1, const void *key2),
+void mac_set_init(Set *set, size_t el_size, int (*match)(const void *key1, const void *key2),
    void (*destroy)(void *data)) {
 
 /*****************************************************************************
@@ -25,7 +25,7 @@ void mac_set_init(Set *set, int (*match)(const void *key1, const void *key2),
 *                                                                            *
 *****************************************************************************/
 
-mac_list_init(set, destroy);
+mac_list_init(set, el_size, destroy);
 set->match = match;
 
 return;
@@ -124,7 +124,7 @@ void               *data;
 *                                                                            *
 *****************************************************************************/
 
-mac_set_init(setu, set1->match, NULL);
+mac_set_init(setu, set1->el_size, set1->match, NULL);
 
 /*****************************************************************************
 *                                                                            *
@@ -202,7 +202,7 @@ void               *data;
 *                                                                            *
 *****************************************************************************/
 
-mac_set_init(seti, set1->match, NULL);
+mac_set_init(seti, set1->el_size, set1->match, NULL);
 
 /*****************************************************************************
 *                                                                            *
@@ -249,7 +249,7 @@ void               *data;
 *                                                                            *
 *****************************************************************************/
 
-mac_set_init(setd, set1->match, NULL);
+mac_set_init(setd, set1->el_size, set1->match, NULL);
 
 /*****************************************************************************
 *                                                                            *

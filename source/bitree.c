@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "bitree.h"
+#include "mac/bitree.h"
 
 /*****************************************************************************
 *                                                                            *

@@ -4,8 +4,8 @@
 *                                                                            *
 *****************************************************************************/
 
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef MAC_QUEUE_H
+#define MAC_QUEUE_H
 
 #include <stdlib.h>
 

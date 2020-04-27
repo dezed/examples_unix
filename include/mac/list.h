@@ -22,6 +22,8 @@ struct ListElmt_   *next;
 
 } ListElmt;
 
+typedef ListElmt mac_list_node_t;
+
 /*****************************************************************************
 *                                                                            *
 *  Define a structure for linked lists.                                      *
@@ -31,6 +33,7 @@ struct ListElmt_   *next;
 typedef struct List_ {
 
 int                size;
+size_t el_size;
 
 int                (*match)(const void *key1, const void *key2);
 void               (*destroy)(void *data);
@@ -47,12 +50,19 @@ typedef List mac_list_t;
 *  --------------------------- Public Interface ---------------------------  *
 *                                                                            *
 *****************************************************************************/
-
+#if 0
 void mac_list_init(List *list, void (*destroy)(void *data));
+#else
+void mac_list_init(List *list, size_t el_size, void (*destroy)(void *data));
+#endif
 
 void mac_list_destroy(List *list);
 
+#if 0
 int mac_list_ins_next(List *list, ListElmt *element, const void *data);
+#else
+int mac_list_ins_next(List *list, ListElmt *element, const void *data);
+#endif
 
 int mac_list_rem_next(List *list, ListElmt *element, void **data);
 

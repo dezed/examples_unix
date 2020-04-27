@@ -1,8 +1,8 @@
 /*****************************************************************************
-*                                                                            *
-*  ------------------------------- dlist.h --------------------------------  *
-*                                                                            *
-*****************************************************************************/
+ *                                                                            *
+ *  ------------------------------- dlist.h --------------------------------  *
+ *                                                                            *
+ *****************************************************************************/
 
 #ifndef MAC_DLIST_H
 #define MAC_DLIST_H
@@ -10,48 +10,55 @@
 #include <stdlib.h>
 
 /*****************************************************************************
-*                                                                            *
-*  Define a structure for doubly-linked list elements.                       *
-*                                                                            *
-*****************************************************************************/
+ *                                                                            *
+ *  Define a structure for doubly-linked list elements.                       *
+ *                                                                            *
+ *****************************************************************************/
 
 typedef struct DListElmt_ {
 
-void               *data;
-struct DListElmt_  *prev;
-struct DListElmt_  *next;
+	void               *data;
+	struct DListElmt_  *prev;
+	struct DListElmt_  *next;
 
 } DListElmt;
 
+typedef DListElmt mac_dlist_node_t;
+
 
 /*****************************************************************************
-*                                                                            *
-*  Define a structure for doubly-linked lists.                               *
-*                                                                            *
-*****************************************************************************/
+ *                                                                            *
+ *  Define a structure for doubly-linked lists.                               *
+ *                                                                            *
+ *****************************************************************************/
 
 typedef struct DList_ {
 
-int                size;
+	int                size;
 
-int                (*match)(const void *key1, const void *key2);
-void               (*destroy)(void *data);
+	size_t el_size;
+	int                (*match)(const void *key1, const void *key2);
+	void               (*destroy)(void *data);
 
-DListElmt          *head;
-DListElmt          *tail;
+	DListElmt          *head;
+	DListElmt          *tail;
 
 } DList;
 
 typedef DList mac_dlist_t;
 /*****************************************************************************
-*                                                                            *
-*  --------------------------- Public Interface ---------------------------  *
-*                                                                            *
-*****************************************************************************/
-
+ *                                                                            *
+ *  --------------------------- Public Interface ---------------------------  *
+ *                                                                            *
+ *****************************************************************************/
+#if 0
 void mac_dlist_init(DList *list, void (*destroy)(void *data));
+#else
+void mac_dlist_init(DList *list, size_t el_size, void (*destroy)(void *data));
+#endif
 
 void mac_dlist_destroy(DList *list);
+
 
 int mac_dlist_ins_next(DList *list, DListElmt *element, const void *data);
 

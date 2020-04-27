@@ -25,7 +25,7 @@ typedef List Set;
 *                                                                            *
 *****************************************************************************/
 
-void mac_set_init(Set *set, int (*match)(const void *key1, const void *key2),
+void mac_set_init(Set *set, size_t el_size,  int (*match)(const void *key1, const void *key2),
    void (*destroy)(void *data));
 
 #define mac_set_destroy mac_list_destroy

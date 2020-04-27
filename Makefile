@@ -4,7 +4,7 @@ CXX=g++
 BUILD_DIR ?= ./build
 SRC_DIRS ?= .
 
-SRCS := source/list.c source/set.c source/queue.c source/bistree.c source/dlist.c source/stack.c source/heap.c source/events.c
+SRCS := source/list.c source/set.c source/queue.c source/bitree.c source/bistree.c source/dlist.c source/stack.c source/heap.c source/events.c
 
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o) 
 DEPS := $(OBJS:.o=.d)
@@ -17,11 +17,11 @@ CPPFLAGS = -fPIC
 
 
 #all:libcsal
-all:$(BUILD_DIR)/libmac
+all:$(BUILD_DIR)/libmac $(BUILD_DIR)/test
 
 $(BUILD_DIR)/libmac: $(OBJS) 
 	@$(MKDIR_P) $(BUILD_DIR)
-	$(CXX) -g -shared -fPIC $(OBJS) -o $@.so $(LDFLAGS) 
+	$(CC) -g -shared -fPIC $(OBJS) -o $@.so $(LDFLAGS) 
 
 # c source
 $(BUILD_DIR)/%.c.o: %.c 
@@ -32,6 +32,9 @@ $(BUILD_DIR)/%.c.o: %.c
 $(BUILD_DIR)/%.cpp.o: %.cpp 
 	@$(MKDIR_P) $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/test: $(BUILD_DIR)/libmac 
+	$(CC) -g test/main.c $(CFLAGS) -o $(BUILD_DIR)/test -lmac -L$(BUILD_DIR)
 
 #test:
 #	gcc -g ./test/main.c $(CFLAGS) $(LDFLAGS) -lcsal -o $(BUILD_DIR)/test 
