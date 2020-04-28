@@ -17,11 +17,17 @@ CPPFLAGS = -fPIC
 
 
 #all:libcsal
-all:$(BUILD_DIR)/libmac $(BUILD_DIR)/test
+all:$(BUILD_DIR)/libmac $(BUILD_DIR)/libmac.a $(BUILD_DIR)/test
 
 $(BUILD_DIR)/libmac: $(OBJS) 
 	@$(MKDIR_P) $(BUILD_DIR)
 	$(CC) -g -shared -fPIC $(OBJS) -o $@.so $(LDFLAGS) 
+
+$(BUILD_DIR)/libmac.a: $(OBJS) 
+	@$(MKDIR_P) $(BUILD_DIR)
+	ar rcs $@ $(OBJS)
+
+
 
 # c source
 $(BUILD_DIR)/%.c.o: %.c 
