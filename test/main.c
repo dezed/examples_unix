@@ -1,9 +1,11 @@
 #include "stdio.h"
+#include "string.h"
 
 #include "mac/list.h"
 #include "mac/dlist.h"
 #include "mac/queue.h"
 #include "mac/cvector.h"
+#include "mac/avl-tree.h"
 
 typedef struct TF
 {
@@ -154,6 +156,89 @@ int test_cvector( TF* tf )
 	return 0;
 }
 
+
+int string_compare( void* string1, void* string2 );
+int string_compare( void* string1, void* string2 )
+{
+	int result = 0;
+
+	result = strcmp((char *) string1, (char *) string2);
+
+	if (result < 0) 
+		result = -1; 
+	else if (result > 0) 
+		result = 1;   
+	else 
+		result = 0;
+
+	return result;	 
+}
+int int_compare( void* val1, void* val2 )
+{
+	int result = 0;
+
+	int* int1 = (int*)val1;
+	int* int2 = (int*)val2;
+
+	if ( *int1 < *int2 ) 
+		result = -1; 
+	else if ( *int1 > *int2 ) 
+		result = 1;   
+	else 
+		result = 0;
+
+	return result;	 
+}
+
+mac_avltree_t* _create_avl_tree()
+{
+	int i = 0;
+	mac_avltree_t* tree = avl_tree_new( sizeof(int), sizeof(int), (AVLTreeCompareFunc) int_compare);
+
+	for( i = 0; i < 10; ++i )
+		avl_tree_insert( tree, &i, &i );
+
+	return tree;
+}
+
+int test_avltree(TF* tf )
+{
+	int i;
+#if 1
+	mac_avltree_t* tree = _create_avl_tree();
+#else
+	mac_avltree_t* tree = avl_tree_new( sizeof(int), sizeof(int), (AVLTreeCompareFunc) int_compare);
+	for( i = 0; i < 10; ++i )
+		avl_tree_insert( tree, &i, &i );
+
+#endif
+	TF_TEST( tf, 10 == avl_tree_num_entries(tree) );
+
+	int keys[] = {1,2,3};
+	int vals[] = {1,2,3};
+
+	for( i = 0; i < 3; ++i )
+	{
+		int key = keys[i];
+		
+		mac_avltree_node_t* node = avl_tree_lookup_node( tree, &key );
+
+		TF_TEST( tf, NULL != node );
+
+		if( node )
+		{
+			int* node_key = avl_tree_node_key( node );
+			int* node_val = avl_tree_node_value( node );
+
+			TF_TEST(tf, *node_key == keys[i] );
+			TF_TEST(tf, *node_val == vals[i] );
+		}
+	}
+
+	avl_tree_free( tree );
+	return 0;
+}
+
 int main()
 {
 	TF tf;
@@ -172,6 +257,10 @@ int main()
 
 	if( 1 )
 		test_cvector( &tf );
+
+
+	if( 1 )
+		test_avltree( &tf );
 
 	TF_finish( &tf );
 

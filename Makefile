@@ -4,7 +4,7 @@ CXX=g++
 BUILD_DIR ?= ./build
 SRC_DIRS ?= .
 
-SRCS := source/list.c source/set.c source/queue.c source/bitree.c source/bistree.c source/dlist.c source/stack.c source/heap.c source/events.c source/cvector.c
+SRCS := source/list.c source/set.c source/queue.c source/bitree.c source/bistree.c source/dlist.c source/stack.c source/heap.c source/events.c source/cvector.c source/avl-tree.c
 
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o) 
 DEPS := $(OBJS:.o=.d)
