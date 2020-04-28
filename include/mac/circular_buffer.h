@@ -1,6 +1,6 @@
 #ifndef CIRCULAR_BUFFER_H_
 #define CIRCULAR_BUFFER_H_
-
+#if 1
 #include <stdbool.h>
 
 /// Opaque circular buffer structure
@@ -12,7 +12,7 @@ typedef circular_buf_t* cbuf_handle_t;
 /// Pass in a storage buffer and size, returns a circular buffer handle
 /// Requires: buffer is not NULL, size > 0
 /// Ensures: cbuf has been created and is returned in an empty state
-cbuf_handle_t circular_buf_init(uint8_t* buffer, size_t el_size, size_t size);
+cbuf_handle_t circular_buf_init( void* buffer, size_t el_size, size_t size);
 
 /// Free a circular buffer structure
 /// Requires: cbuf is valid and created by circular_buf_init
@@ -60,5 +60,27 @@ size_t circular_buf_size(cbuf_handle_t cbuf);
 
 //TODO: int circular_buf_get_range(circular_buf_t cbuf, uint8_t *data, size_t len);
 //TODO: int circular_buf_put_range(circular_buf_t cbuf, uint8_t * data, size_t len);
+#else
 
+
+
+
+typedef struct circular_buffer
+{
+    void *buffer;     // data buffer
+    void *buffer_end; // end of data buffer
+    size_t capacity;  // maximum number of items in the buffer
+    size_t count;     // number of items in the buffer
+    size_t sz;        // size of each item in the buffer
+    void *head;       // pointer to head
+    void *tail;       // pointer to tail
+} circular_buffer;
+
+typedef circular_buffer circular_buffer_t;
+
+void cb_init(circular_buffer *cb, size_t capacity, size_t sz);
+void cb_free(circular_buffer *cb);
+void cb_push_back(circular_buffer *cb, const void *item);
+void cb_pop_front(circular_buffer *cb, void *item);
+#endif
 #endif //CIRCULAR_BUFFER_H_

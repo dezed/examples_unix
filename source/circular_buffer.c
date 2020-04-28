@@ -6,16 +6,22 @@
 
 #include "mac/circular_buffer.h"
 
+#if 1
 /*https://github.com/embeddedartistry/embedded-resources/blob/master/examples/c/circular_buffer/circular_buffer.c)*/
 
 // The definition of our circular buffer structure is hidden from the user
 struct circular_buf_t {
-	uint8_t * buffer;
+	void* buffer;
+#if 0
 	size_t head;
 	size_t tail;
+#endif
 	size_t max; //of the buffer
 	size_t el_size;
 	bool full;
+
+	size_t head_idx;
+	size_t tail_idx;
 };
 
 
@@ -24,14 +30,14 @@ static void advance_pointer(cbuf_handle_t cbuf)
 	assert(cbuf);
 
 	if(cbuf->full)
-    {
-        cbuf->tail = (cbuf->tail + (1*cbuf->el_size)) % cbuf->max;
-    }
+	{
+		cbuf->tail_idx = (cbuf->tail_idx + 1) % cbuf->max;
+	}
 
-	cbuf->head = (cbuf->head + (1* cbuf->el_size)) % cbuf->max;
+	cbuf->head_idx = (cbuf->head_idx + 1) % cbuf->max;
 
 	// We mark full because we will advance tail on the next time around
-	cbuf->full = (cbuf->head == cbuf->tail);
+	cbuf->full = (cbuf->head_idx == cbuf->tail_idx);
 }
 
 static void retreat_pointer(cbuf_handle_t cbuf)
@@ -39,11 +45,11 @@ static void retreat_pointer(cbuf_handle_t cbuf)
 	assert(cbuf);
 
 	cbuf->full = false;
-	cbuf->tail = (cbuf->tail + (1*cbuf->el_size)) % cbuf->max;
+	cbuf->tail_idx = (cbuf->tail_idx +1 ) % cbuf->max;
 }
 
 
-cbuf_handle_t circular_buf_init(uint8_t* buffer, size_t el_size, size_t size)
+cbuf_handle_t circular_buf_init( void* buffer, size_t el_size, size_t size)
 {
 	assert(buffer && size);
 
@@ -70,9 +76,10 @@ void circular_buf_reset(cbuf_handle_t cbuf)
 {
     assert(cbuf);
 
-    cbuf->head = 0;
-    cbuf->tail = 0;
     cbuf->full = false;
+
+    cbuf->head_idx = 0;
+    cbuf->tail_idx = 0;
 }
 
 size_t circular_buf_size(cbuf_handle_t cbuf)
@@ -83,15 +90,20 @@ size_t circular_buf_size(cbuf_handle_t cbuf)
 
 	if(!cbuf->full)
 	{
-		if(cbuf->head >= cbuf->tail)
+		if(cbuf->head_idx >= cbuf->tail_idx)
 		{
-			size = (cbuf->head - cbuf->tail);
+			/*size = (cbuf->head - cbuf->tail) / cbuf->el_size;*/
+			size = cbuf->head_idx - cbuf->tail_idx;
 		}
 		else
 		{
-			size = (cbuf->max + cbuf->head - cbuf->tail);
+			/*
+			size = cbuf->max*cbuf->el_size;
+			size += cbuf->head - cbuf->tail;
+			size = size / cbuf->el_size;
+*/
+			size = cbuf->max + cbuf->head_idx - cbuf->tail_idx;
 		}
-
 	}
 
 	return size;
@@ -111,7 +123,8 @@ void circular_buf_put(cbuf_handle_t cbuf, void* data)
 #if 0
     cbuf->buffer[cbuf->head] = data;
 #else
-    memcpy( cbuf->buffer + cbuf->head, data, cbuf->el_size );
+    size_t offset = cbuf->head_idx * cbuf->el_size;
+    memcpy( cbuf->buffer + offset, data, cbuf->el_size );
 #endif
 
     advance_pointer(cbuf);
@@ -128,7 +141,8 @@ int circular_buf_put2(cbuf_handle_t cbuf, void* data)
 #if 0
         cbuf->buffer[cbuf->head] = data;
 #else
-    memcpy( cbuf->buffer + cbuf->head, data, cbuf->el_size );
+	size_t offset = cbuf->head_idx * cbuf->el_size;
+    memcpy( cbuf->buffer + offset, data, cbuf->el_size );
 #endif
         advance_pointer(cbuf);
         r = 0;
@@ -148,7 +162,11 @@ int circular_buf_get(cbuf_handle_t cbuf, void** data)
 #if 0
         *data = cbuf->buffer[cbuf->tail];
 #else
-	*data = cbuf->buffer + cbuf->tail;
+	size_t offset = cbuf->tail_idx * cbuf->el_size;
+
+	/**data = cbuf->buffer + cbuf->tail;*/
+
+	*data = cbuf->buffer + offset;
 #endif
         retreat_pointer(cbuf);
 
@@ -162,7 +180,8 @@ bool circular_buf_empty(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-    return (!cbuf->full && (cbuf->head == cbuf->tail));
+    /*return (!cbuf->full && (cbuf->head == cbuf->tail));*/
+    return (!cbuf->full && (cbuf->head_idx == cbuf->tail_idx));
 }
 
 bool circular_buf_full(cbuf_handle_t cbuf)
@@ -171,3 +190,47 @@ bool circular_buf_full(cbuf_handle_t cbuf)
 
     return cbuf->full;
 }
+#else
+void cb_init(circular_buffer *cb, size_t capacity, size_t sz)
+{
+    cb->buffer = malloc(capacity * sz);
+    if(cb->buffer == NULL)
+        // handle error
+    cb->buffer_end = (char *)cb->buffer + capacity * sz;
+    cb->capacity = capacity;
+    cb->count = 0;
+    cb->sz = sz;
+    cb->head = cb->buffer;
+    cb->tail = cb->buffer;
+}
+
+void cb_free(circular_buffer *cb)
+{
+    free(cb->buffer);
+    // clear out other fields too, just to be safe
+}
+
+void cb_push_back(circular_buffer *cb, const void *item)
+{
+    if(cb->count == cb->capacity){
+        // handle error
+    }
+    memcpy(cb->head, item, cb->sz);
+    cb->head = (char*)cb->head + cb->sz;
+    if(cb->head == cb->buffer_end)
+        cb->head = cb->buffer;
+    cb->count++;
+}
+
+void cb_pop_front(circular_buffer *cb, void *item)
+{
+    if(cb->count == 0){
+        // handle error
+    }
+    memcpy(item, cb->tail, cb->sz);
+    cb->tail = (char*)cb->tail + cb->sz;
+    if(cb->tail == cb->buffer_end)
+        cb->tail = cb->buffer;
+    cb->count--;
+}
+#endif

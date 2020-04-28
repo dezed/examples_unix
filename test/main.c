@@ -6,6 +6,7 @@
 #include "mac/queue.h"
 #include "mac/cvector.h"
 #include "mac/avl-tree.h"
+#include "mac/circular_buffer.h"
 
 typedef struct TF
 {
@@ -239,6 +240,57 @@ int test_avltree(TF* tf )
 	return 0;
 }
 
+int test_circular_buffer(TF* tf)
+{
+	int buffer[10];
+	int i = 0;
+	int* val=NULL;
+
+	cbuf_handle_t cbuf = circular_buf_init( buffer, sizeof(int), 10 );
+
+	memset(buffer, 0, 10 * sizeof(int) );
+
+	for( i = 0; i < 10; ++i)
+	{
+		circular_buf_put( cbuf, &i );
+
+		TF_TEST( tf, i+1 == circular_buf_size( cbuf ) );
+	}
+
+	TF_TEST( tf, 10 == circular_buf_size( cbuf ) );
+
+
+	circular_buf_put( cbuf, &i );
+
+	TF_TEST( tf, 10 == circular_buf_size( cbuf ) );
+
+
+	TF_TEST( tf, 10 == buffer[0] );
+	TF_TEST( tf, 9 == buffer[9] );
+
+	circular_buf_get( cbuf, (void**)&val );
+
+	TF_TEST( tf, 1 == *val );
+
+	TF_TEST( tf, 9 == circular_buf_size( cbuf ) );
+
+	circular_buf_get( cbuf, (void**)&val );
+
+	TF_TEST( tf, 2 == *val );
+
+	TF_TEST( tf, 8 == circular_buf_size( cbuf ) );
+
+	circular_buf_get( cbuf, (void**)&val );
+
+	TF_TEST( tf, 3 == *val );
+
+	TF_TEST( tf,7 == circular_buf_size( cbuf ) );
+
+	circular_buf_free( cbuf );
+
+	return 0;
+}
+
 int main()
 {
 	TF tf;
@@ -261,6 +313,10 @@ int main()
 
 	if( 1 )
 		test_avltree( &tf );
+
+
+	if( 1 )
+		test_circular_buffer( &tf );
 
 	TF_finish( &tf );
 
