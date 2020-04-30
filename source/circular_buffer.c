@@ -12,11 +12,7 @@
 // The definition of our circular buffer structure is hidden from the user
 struct circular_buf_t {
 	void* buffer;
-#if 0
-	size_t head;
-	size_t tail;
-#endif
-	size_t max; //of the buffer
+	size_t max;
 	size_t el_size;
 	bool full;
 
@@ -92,16 +88,10 @@ size_t circular_buf_size(cbuf_handle_t cbuf)
 	{
 		if(cbuf->head_idx >= cbuf->tail_idx)
 		{
-			/*size = (cbuf->head - cbuf->tail) / cbuf->el_size;*/
 			size = cbuf->head_idx - cbuf->tail_idx;
 		}
 		else
 		{
-			/*
-			size = cbuf->max*cbuf->el_size;
-			size += cbuf->head - cbuf->tail;
-			size = size / cbuf->el_size;
-*/
 			size = cbuf->max + cbuf->head_idx - cbuf->tail_idx;
 		}
 	}
@@ -120,12 +110,8 @@ void circular_buf_put(cbuf_handle_t cbuf, void* data)
 {
 	assert(cbuf && cbuf->buffer);
 
-#if 0
-    cbuf->buffer[cbuf->head] = data;
-#else
     size_t offset = cbuf->head_idx * cbuf->el_size;
     memcpy( cbuf->buffer + offset, data, cbuf->el_size );
-#endif
 
     advance_pointer(cbuf);
 }
@@ -138,13 +124,10 @@ int circular_buf_put2(cbuf_handle_t cbuf, void* data)
 
     if(!circular_buf_full(cbuf))
     {
-#if 0
-        cbuf->buffer[cbuf->head] = data;
-#else
 	size_t offset = cbuf->head_idx * cbuf->el_size;
-    memcpy( cbuf->buffer + offset, data, cbuf->el_size );
-#endif
-        advance_pointer(cbuf);
+	memcpy( cbuf->buffer + offset, data, cbuf->el_size );
+        
+	advance_pointer(cbuf);
         r = 0;
     }
 
@@ -159,15 +142,10 @@ int circular_buf_get(cbuf_handle_t cbuf, void** data)
 
     if(!circular_buf_empty(cbuf))
     {
-#if 0
-        *data = cbuf->buffer[cbuf->tail];
-#else
 	size_t offset = cbuf->tail_idx * cbuf->el_size;
 
-	/**data = cbuf->buffer + cbuf->tail;*/
-
 	*data = cbuf->buffer + offset;
-#endif
+
         retreat_pointer(cbuf);
 
         r = 0;
@@ -180,7 +158,6 @@ bool circular_buf_empty(cbuf_handle_t cbuf)
 {
 	assert(cbuf);
 
-    /*return (!cbuf->full && (cbuf->head == cbuf->tail));*/
     return (!cbuf->full && (cbuf->head_idx == cbuf->tail_idx));
 }
 
